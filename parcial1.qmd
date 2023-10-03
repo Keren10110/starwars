@@ -83,6 +83,8 @@ El personaje más alto es `r Muestra$name[tallestIndex]` con `r max(Muestra$heig
 
 El planeta natal más común entre los personajes es `r ciudadMasComun` .
 
+La especie más común entre los personajes es `r especieMasComun` .
+
 El promedio de altura entre los personajes es `r round(promedioAltura,2)` m.
 
 `r rubios`
