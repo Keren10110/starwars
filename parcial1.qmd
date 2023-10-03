@@ -1,0 +1,107 @@
+---
+title: "Star Wars"
+author: "Keren A. Pájaro C."
+format: pdf
+editor: visual
+echo: false
+---
+
+```{r maincode}
+#library(readxl)
+file="./starwars.csv"
+df=read.csv(file)
+#str(df)
+#summary(df)
+#Selección de una muestra aleatoria
+N = nrow(df) #tamaño de la población
+n=50 # tamaño de la muestra
+set.seed(put_your_seed)
+registros = sample(1:N,n,replace = F)
+Muestra_raw = df[registros,]
+Muestra = na.omit(Muestra_raw)
+#print(Muestra)
+#summary(Muestra)
+
+na_counts = numeric(length(Muestra_raw))
+s=paste("hay")
+for (colName in names(Muestra_raw)) {
+  na_counts[colName] <- sum(is.na(Muestra_raw[[colName]]))
+  if(na_counts[colName]!=0){
+    ss=paste(na_counts[colName]," datos faltantes en ",colName,", ")
+    s=paste(s,ss)
+  }
+  
+}
+
+if (s=="hay"){
+  s=paste("no hay datos faltantes")
+}else{
+  s = sub(", $", "", s)
+  s = gsub(",([^,]*)$", " y\\1", s)
+  s=paste(s,". ",sum(na_counts),"en total.")
+}
+
+tallestIndex=which.max(Muestra$height)
+#tallestPerson=Muestra[which.max(Muestra$height), "name"]
+
+Mode = function(x) {
+ux <- unique(x)
+ux[which.max(tabulate(match(x, ux)))]
+}
+ciudadMasComun=Mode(Muestra$homeworld)
+especieMasComun=Mode(Muestra$species)
+promedioAltura=mean(Muestra$height)/100 #Altura en m
+hairColorCounts = table(Muestra$hair_color)
+rubios = sum(hairColorCounts[c("blonde", "blond")])
+if (is.na(rubios)){
+  rubios=paste("No hay personajes rubios")
+}else{
+  rubios=paste("Hay ",rubios,"personajes rubios")
+}
+ojosMasComun=Mode(Muestra$eye_color)
+lukeSkywalkerMovie=Muestra$films[Muestra$name=="Luke Skywalker"];
+if (length(lukeSkywalkerMovie)==0){
+  lukeSkywalkerMovie=paste("no se encontró dentro de la muestra.")
+}else{
+  lukeSkywalkerMovie=paste(" aparece en ",lukeSkywalkerMovie)
+}
+
+colorDeOjosCount=table(Muestra$eye_color)
+ojosAzul=colorDeOjosCount[c("blue")]
+if(is.na(ojosAzul)){
+  ojosAzul=paste("No hay personajes con ojos azules.")
+}else{
+  ojosAzul=paste("Hay ",ojosAzul," personajes con ojos azules.")
+}
+```
+
+Se analizaron `r n` personajes de la base de datos de star wars.
+
+Al analizar la información se encontró que `r s`
+
+El personaje más alto es `r Muestra$name[tallestIndex]` con `r max(Muestra$height)/100` m.
+
+El planeta natal más común entre los personajes es `r ciudadMasComun` .
+
+El promedio de altura entre los personajes es `r round(promedioAltura,2)` m.
+
+`r rubios`
+
+El color de ojos más común entre los personajes es `r ojosMasComun`.
+
+El personaje *Luke Skywalker* `r lukeSkywalkerMovie`.
+
+`r ojosAzul`
+
+#### Anexo
+
+El código utilizado para analizar los datos:[^1]
+
+[^1]: *Añadido con '{r maincode, echo=TRUE}'*
+
+```{r maincode, echo=TRUE}
+```
+
+Documento también disponible en github[^2]
+
+[^2]: Repositorio de github https://github.com/Keren10110/starwars
