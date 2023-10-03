@@ -52,11 +52,19 @@ ciudadMasComun=Mode(Muestra$homeworld)
 especieMasComun=Mode(Muestra$species)
 promedioAltura=mean(Muestra$height)/100 #Altura en m
 hairColorCounts = table(Muestra$hair_color)
-rubios = sum(hairColorCounts[c("blonde", "blond")])
-if (is.na(rubios)){
-  rubios=paste("No hay personajes rubios")
+rubios = hairColorCounts["blond"]
+rubias=hairColorCounts["blonde"]
+if(is.na(rubios)){
+  rubios=0
+}
+if(is.na(rubias)){
+  rubias=0
+}
+cuentaRubios=rubios+rubias
+if(cuentaRubios==0){
+  cuentaRubios=paste("No hay personajes rubios")
 }else{
-  rubios=paste("Hay ",rubios,"personajes rubios")
+  cuentaRubios=paste("Hay ",cuentaRubios," personajes rubios")
 }
 ojosMasComun=Mode(Muestra$eye_color)
 lukeSkywalkerMovie=Muestra$films[Muestra$name=="Luke Skywalker"];
@@ -73,9 +81,10 @@ if(is.na(ojosAzul)){
 }else{
   ojosAzul=paste("Hay ",ojosAzul," personajes con ojos azules.")
 }
+
 ```
 
-Se analizaron `r n` personajes de la base de datos de star wars.
+Se analizaron `r n` personajes de la base de datos de star wars la cual contiene `r N` personajes en total.
 
 Al analizar la información se encontró que `r s`
 
@@ -87,7 +96,7 @@ La especie más común entre los personajes es `r especieMasComun` .
 
 El promedio de altura entre los personajes es `r round(promedioAltura,2)` m.
 
-`r rubios`
+`r cuentaRubios`
 
 El color de ojos más común entre los personajes es `r ojosMasComun`.
 
